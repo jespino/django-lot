@@ -16,7 +16,7 @@
 
 Django Fast Authentication Request over Token easy the creation of token based
 logins. Can be on-time-logins, temporary valid logins or permanent logins,
-alwais based on your settings.
+always based on your settings.
 
 How to install
 --------------
@@ -53,8 +53,8 @@ Example::
         'duration': 60*60*24,
         'one-time': True,
     },
-    'alwais-login': {
-        'name': _(u'Alwais login'),
+    'always-login': {
+        'name': _(u'Always login'),
         'one-time': False,
         'duration': None,
     },

@@ -20,8 +20,8 @@ FART_SETTINGS = getattr(settings, 'FART', {
         'duration': 60*60*24,
         'one-time': False
     },
-    'alwais-login': {
-        'name': _(u'Alwais login'),
+    'always-login': {
+        'name': _(u'Always login'),
         'one-time': False,
         'duration': None,
     },

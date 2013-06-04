@@ -37,11 +37,11 @@ class TestFARTBase(unittest.TestCase):
         )
         cls.fart3 =FART.objects.create(
                 user=test_user,
-                type="alwais-login",
+                type="always-login",
         )
         cls.fart4 =FART.objects.create(
                 user=test_user,
-                type="alwais-login",
+                type="always-login",
                 session_data=simplejson.dumps({'data':'test'}),
         )
 
@@ -89,7 +89,7 @@ class TestFARTView(TestFARTBase):
 
         self.assertEqual(FART.objects.all().count(), farts-1)
 
-    def test_fart_login_view_allwais_valid(self):
+    def test_fart_login_view_allways_valid(self):
         c = Client()
         farts = FART.objects.all().count()
 
@@ -177,7 +177,7 @@ class TestFARTMiddleware(TestFARTBase):
 
         self.assertEqual(FART.objects.all().count(), farts-1)
 
-    def test_fart_login_middleware_allwais_valid(self):
+    def test_fart_login_middleware_allways_valid(self):
         c = Client()
         farts = FART.objects.all().count()
 
