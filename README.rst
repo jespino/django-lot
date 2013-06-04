@@ -1,6 +1,6 @@
 .. image:: logo/logo.png
 
-
+------
 
 .. image:: https://travis-ci.org/jespino/django-fart.png?branch=master
     :target: https://travis-ci.org/jespino/django-fart
