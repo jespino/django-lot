@@ -67,7 +67,8 @@ Usage
 
 You have to create the FART instances with a user and a type (the uuid and the
 created date are auto-generated). Then you can use the fart login view, or the
-the fart login middleware.
+the fart login middleware. You can set the session_data attribute to add data
+to the user session when login with FART.
 
 If you use the fart middleware you can login in any url that have the param
 defined in the :code:`FART_MIDDLEWARE_PARAM_NAME` and have a valid FART instance
