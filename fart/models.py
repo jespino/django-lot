@@ -7,6 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth import get_user_model
 
+from django.utils.timezone import now
+
 FART_SETTINGS = getattr(settings, 'FART', {
     'fast-login': {
         'name': _(u'Fast login'),
@@ -42,7 +44,7 @@ class FART(models.Model):
         if duration == None:
             return True
         else:
-            return (self.created + datetime.timedelta(seconds=duration)) > datetime.datetime.now()
+            return (now() - self.created).total_seconds() < duration
 
     def is_one_time(self):
         return FART_SETTINGS.get(self.type, {}).get('one-time', False)

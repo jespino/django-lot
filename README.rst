@@ -27,6 +27,15 @@ You can also install it with: ``pip install django-fart``
 Configuration
 -------------
 
+Add the fart authentication backend to the :code:`AUTHENTICATION_BACKENDS`
+settings variable.
+
+Example::
+  AUTHENTICATION_BACKENDS = (
+      "django.contrib.auth.backends.ModelBackend",
+      "fart.auth_backend.FARTBackend",
+  )
+
 Add the fart app to your installed apps and define your settings :code:`FART`
 variable as a dictionary and :code:`FART_MIDDLEWARE_PARAM_NAME` if you use the
 fart middleware.
