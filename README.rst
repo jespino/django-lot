@@ -31,6 +31,7 @@ Add the fart authentication backend to the :code:`AUTHENTICATION_BACKENDS`
 settings variable.
 
 Example::
+
   AUTHENTICATION_BACKENDS = (
       "django.contrib.auth.backends.ModelBackend",
       "fart.auth_backend.FARTBackend",
