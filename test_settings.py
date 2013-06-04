@@ -33,6 +33,6 @@ MIDDLEWARE_CLASSES = (
     'fart.middleware.FartMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = ['fart.auth_backend.FartBackend']
+AUTHENTICATION_BACKENDS = ['fart.auth_backend.FARTBackend']
 
 FART_MIDDLEWARE_PARAM_NAME = 'uuid-login'
