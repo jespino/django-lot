@@ -2,7 +2,7 @@
 
 from django.conf.urls import patterns, include, url
 
-from fart.tests import TestView
+from .tests import TestView
 
 
 urlpatterns = patterns("",
