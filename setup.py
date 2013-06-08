@@ -2,7 +2,7 @@
 from setuptools import setup
 import os
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 
 description = """
 Django Fast Authenticate Request over Token.

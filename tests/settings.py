@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'fart',
 ]
 
-ROOT_URLCONF = 'test_urls'
+ROOT_URLCONF = 'tests.urls'
 
 ALLOWED_HOSTS = ['testserver',]
 

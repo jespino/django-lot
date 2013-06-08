@@ -11,7 +11,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth import get_user_model
 
-from .models import FART
+from fart.models import FART
 
 call_command('syncdb', interactive=False)
 
