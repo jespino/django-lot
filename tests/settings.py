@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.contenttypes',
     'django.contrib.auth',
-    'fart',
+    'lot',
 ]
 
 ROOT_URLCONF = 'tests.urls'
@@ -30,9 +30,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'fart.middleware.FartMiddleware',
+    'lot.middleware.LOTMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = ['fart.auth_backend.FARTBackend']
+AUTHENTICATION_BACKENDS = ['lot.auth_backend.LOTBackend']
 
-FART_MIDDLEWARE_PARAM_NAME = 'uuid-login'
+LOT_MIDDLEWARE_PARAM_NAME = 'uuid-login'

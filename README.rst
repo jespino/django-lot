@@ -1,18 +1,17 @@
-.. image:: logo/logo.png
+Django Login over Token
+=======================
 
-------
+.. image:: https://travis-ci.org/jespino/django-lot.png?branch=master
+    :target: https://travis-ci.org/jespino/django-lot
 
-.. image:: https://travis-ci.org/jespino/django-fart.png?branch=master
-    :target: https://travis-ci.org/jespino/django-fart
+.. image:: https://coveralls.io/repos/jespino/django-lot/badge.png?branch=master
+    :target: https://coveralls.io/r/jespino/django-lot?branch=master
 
-.. image:: https://coveralls.io/repos/jespino/django-fart/badge.png?branch=master
-    :target: https://coveralls.io/r/jespino/django-fart?branch=master
+.. image:: https://pypip.in/v/django-lot/badge.png
+    :target: https://crate.io/packages/django-lot
 
-.. image:: https://pypip.in/v/django-fart/badge.png
-    :target: https://crate.io/packages/django-fart
-
-.. image:: https://pypip.in/d/django-fart/badge.png
-    :target: https://crate.io/packages/django-fart
+.. image:: https://pypip.in/d/django-lot/badge.png
+    :target: https://crate.io/packages/django-lot
 
 Django Fast Authentication Request over Token easy the creation of token based
 logins. Can be on-time-logins, temporary valid logins or permanent logins,
@@ -21,29 +20,29 @@ always based on your settings.
 How to install
 --------------
 
-You can also install it with: ``pip install django-fart``
+You can also install it with: ``pip install django-lot``
 
 
 Configuration
 -------------
 
-Add the fart authentication backend to the :code:`AUTHENTICATION_BACKENDS`
+Add the lot authentication backend to the :code:`AUTHENTICATION_BACKENDS`
 settings variable.
 
 Example::
 
   AUTHENTICATION_BACKENDS = (
       "django.contrib.auth.backends.ModelBackend",
-      "fart.auth_backend.FARTBackend",
+      "lot.auth_backend.LOTBackend",
   )
 
-Add the fart app to your installed apps and define your settings :code:`FART`
-variable as a dictionary and :code:`FART_MIDDLEWARE_PARAM_NAME` if you use the
-fart middleware.
+Add the lot app to your installed apps and define your settings :code:`LOT`
+variable as a dictionary and :code:`LOT_MIDDLEWARE_PARAM_NAME` if you use the
+lot middleware.
 
 Example::
 
-  FART = {
+  LOT = {
     'fast-login': {
         'name': _(u'Fast login'),
         'duration': 60,
@@ -61,18 +60,18 @@ Example::
     },
   }
 
-  FART_MIDDLEWARE_PARAM_NAME = 'uuid-login'
+  LOT_MIDDLEWARE_PARAM_NAME = 'uuid-login'
 
 Usage
 -----
 
-You have to create the FART instances with a user and a type (the uuid and the
-created date are auto-generated). Then you can use the fart login view, or the
-the fart login middleware. You can set the session_data attribute to add data
-to the user session when login with FART.
+You have to create the LOT instances with a user and a type (the uuid and the
+created date are auto-generated). Then you can use the lot login view, or the
+the lot login middleware. You can set the session_data attribute to add data
+to the user session when login with LOT.
 
-If you use the fart middleware you can login in any url that have the param
-defined in the :code:`FART_MIDDLEWARE_PARAM_NAME` and have a valid FART instance
+If you use the lot middleware you can login in any url that have the param
+defined in the :code:`LOT_MIDDLEWARE_PARAM_NAME` and have a valid LOT instance
 related to it.
 
 If you use the view you can add the next param to redirect the user to an url

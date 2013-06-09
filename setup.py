@@ -5,17 +5,17 @@ import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 
 description = """
-Django Fast Authenticate Request over Token.
+Django Login over Token.
 """
 
 setup(
-    name = "django-fart",
-    url = "https://github.com/jespino/django-fart",
+    name = "django-lot",
+    url = "https://github.com/jespino/django-lot",
     author = "Jesús Espino",
     author_email = "jespinog@gmail.com",
-    version=':versiontools:fart:',
+    version=':versiontools:lot:',
     packages = [
-        "fart",
+        "lot",
     ],
     description = description.strip(),
     install_requires=['django >= 1.3.0', 'simplejson >= 3.3.0'],

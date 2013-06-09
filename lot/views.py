@@ -6,28 +6,28 @@ from django.views.generic import View
 
 from django.contrib.auth import authenticate, login
 
-from .models import FART
+from .models import LOT
 
-class FARTLogin(View):
+class LOTLogin(View):
     def get(self, request, uuid):
         next_url = request.GET.get('next', '/')
-        fart = get_object_or_404(FART, uuid=uuid)
-        if not fart.verify():
-            fart.delete()
+        lot = get_object_or_404(LOT, uuid=uuid)
+        if not lot.verify():
+            lot.delete()
             return HttpResponseNotFound()
 
-        user = authenticate(fart_uuid=uuid)
+        user = authenticate(lot_uuid=uuid)
         login(request, user)
 
         try:
-            session_data = simplejson.loads(fart.session_data)
+            session_data = simplejson.loads(lot.session_data)
             for key, value in session_data.iteritems():
                 request.session[key] = value
         except Exception:
             # If not correctly serialized not set the session_data
             pass
 
-        if fart.is_one_time():
-            fart.delete()
+        if lot.is_one_time():
+            lot.delete()
 
         return HttpResponseRedirect(next_url)

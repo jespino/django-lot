@@ -3,31 +3,31 @@ import simplejson
 from django.conf import settings
 from django.contrib.auth import authenticate, login
 
-from .models import FART
+from .models import LOT
 
-class FartMiddleware(object):
+class LOTMiddleware(object):
     def process_request(self, request):
-        fart_uuid = request.GET.get(settings.FART_MIDDLEWARE_PARAM_NAME, None)
-        if fart_uuid:
+        lot_uuid = request.GET.get(settings.LOT_MIDDLEWARE_PARAM_NAME, None)
+        if lot_uuid:
             try:
-                fart = FART.objects.get(uuid=fart_uuid)
-            except FART.DoesNotExist:
+                lot = LOT.objects.get(uuid=lot_uuid)
+            except LOT.DoesNotExist:
                 return None
 
-            if not fart.verify():
-                fart.delete()
+            if not lot.verify():
+                lot.delete()
                 return None
 
-            user = authenticate(fart_uuid=fart_uuid)
+            user = authenticate(lot_uuid=lot_uuid)
             login(request, user)
 
             try:
-                session_data = simplejson.loads(fart.session_data)
+                session_data = simplejson.loads(lot.session_data)
                 for key, value in session_data.iteritems():
                     request.session[key] = value
             except Exception:
                 # If not correctly serialized not set the session_data
                 pass
 
-            if fart.is_one_time():
-                fart.delete()
+            if lot.is_one_time():
+                lot.delete()

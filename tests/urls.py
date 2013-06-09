@@ -6,6 +6,6 @@ from .tests import TestView
 
 
 urlpatterns = patterns("",
-    url(r"", include('fart.urls')),
+    url(r"", include('lot.urls')),
     url(r"^test_url/$", TestView.as_view()),
 )
