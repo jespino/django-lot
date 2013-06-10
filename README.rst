@@ -13,9 +13,9 @@ Django Login over Token
 .. image:: https://pypip.in/d/django-lot/badge.png
     :target: https://crate.io/packages/django-lot
 
-Django Fast Authentication Request over Token easy the creation of token based
-logins. Can be on-time-logins, temporary valid logins or permanent logins,
-always based on your settings.
+Django Login over Token easy the creation of token based logins. Can be
+one-time-logins, temporary valid logins or permanent logins, always based on
+your settings.
 
 How to install
 --------------
