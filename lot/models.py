@@ -1,4 +1,3 @@
-import datetime
 from uuid import uuid4
 
 from django.db import models
@@ -26,11 +25,13 @@ LOT_SETTINGS = getattr(settings, 'LOT', {
         'duration': None,
     },
 })
-LOT_TYPE_CHOICES = [ (key, value['name']) for key, value in LOT_SETTINGS.iteritems() ]
+LOT_TYPE_CHOICES = [(key, value['name']) for key, value in LOT_SETTINGS.iteritems()]
+
 
 class LOT(models.Model):
     uuid = models.CharField(max_length=50, null=False, blank=False, verbose_name=_('Uuid'))
-    type = models.SlugField(max_length=50, choices=LOT_TYPE_CHOICES, null=False, blank=False, verbose_name=_('LOT type'))
+    type = models.SlugField(max_length=50, choices=LOT_TYPE_CHOICES, null=False, blank=False,
+                            verbose_name=_('LOT type'))
     user = models.ForeignKey(get_user_model(), null=False, blank=False, verbose_name=_('user'))
     session_data = models.TextField(null=True, blank=True, verbose_name=_('Jsoned Session Data'))
     created = models.DateTimeField(auto_now_add=True, null=False, blank=False, verbose_name=_('creation date'))
@@ -39,12 +40,12 @@ class LOT(models.Model):
         if not self.type in LOT_SETTINGS:
             return False
 
-        duration = LOT_SETTINGS.get(self.type).get('duration', None)
+        duration = LOT_SETTINGS.get(self.type, {}).get('duration', None)
 
-        if duration == None:
+        if duration is None:
             return True
-        else:
-            return (now() - self.created).total_seconds() < duration
+
+        return (now() - self.created).total_seconds() < duration
 
     def is_one_time(self):
         return LOT_SETTINGS.get(self.type, {}).get('one-time', False)
@@ -54,3 +55,6 @@ class LOT(models.Model):
             raise Exception('Modification not allowed (you can force it with the force_modification parameter on save)')
         self.uuid = uuid4()
         super(LOT, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return "{0} ({1})".format(self.get_type_display(), self.uuid)
