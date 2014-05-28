@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 
 from .models import LOT
 
+
 class LOTMiddleware(object):
     def process_request(self, request):
         lot_uuid = request.GET.get(settings.LOT_MIDDLEWARE_PARAM_NAME, None)

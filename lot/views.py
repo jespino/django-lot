@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login
 
 from .models import LOT
 
+
 class LOTLogin(View):
     def get(self, request, uuid):
         next_url = request.GET.get('next', '/')

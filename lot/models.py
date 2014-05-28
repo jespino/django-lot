@@ -25,16 +25,19 @@ LOT_SETTINGS = getattr(settings, 'LOT', {
         'duration': None,
     },
 })
-LOT_TYPE_CHOICES = [(key, value['name']) for key, value in LOT_SETTINGS.items()]
+LOT_TYPE_CHOICES = [
+    (key, value['name'])
+    for key, value in LOT_SETTINGS.items()
+]
 
 
 class LOT(models.Model):
-    uuid = models.CharField(max_length=50, null=False, blank=False, verbose_name=_('Uuid'))
-    type = models.SlugField(max_length=50, choices=LOT_TYPE_CHOICES, null=False, blank=False,
-                            verbose_name=_('LOT type'))
-    user = models.ForeignKey(get_user_model(), null=False, blank=False, verbose_name=_('user'))
-    session_data = models.TextField(null=True, blank=True, verbose_name=_('Jsoned Session Data'))
-    created = models.DateTimeField(auto_now_add=True, null=False, blank=False, verbose_name=_('creation date'))
+    uuid = models.CharField(_('UUID'), max_length=50)
+    type = models.SlugField(_('LOT type'), max_length=50,
+                            choices=LOT_TYPE_CHOICES)
+    user = models.ForeignKey(get_user_model(), verbose_name=_('user'))
+    session_data = models.TextField(_('Jsoned Session Data'), blank=True)
+    created = models.DateTimeField(_('Creation date'), auto_now_add=True)
 
     def verify(self):
 
@@ -53,7 +56,8 @@ class LOT(models.Model):
 
     def save(self, *args, **kwargs):
         if self.id and not kwargs.pop('force_modification', False):
-            raise Exception('Modification not allowed (you can force it with the force_modification parameter on save)')
+            raise Exception('Modification not allowed without '
+                            'force_modification parameter on save.')
         self.uuid = uuid4()
         super(LOT, self).save(*args, **kwargs)
 
