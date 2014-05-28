@@ -36,17 +36,17 @@ class LOTAuthenticationMiddleware(object):
     '''Authenticate using a Header'''
     def process_request(self, request):
         try:
-            token = request.META['X-Auth-Token']
+            token = request.META['HTTP_X_AUTH_TOKEN']
             lot = LOT.objects.select_related('user').get(uuid=token)
         except (KeyError, LOT.DoesNotExist):
             return
-        
+
         if not lot.verify():
             lot.delete()
             return
-        
+
         request.user = lot.user
-        
+
         try:
             session_data = json.loads(lot.session_data)
             request.session.update(session_data)
