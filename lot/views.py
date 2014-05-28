@@ -1,4 +1,4 @@
-import simplejson
+import json
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotFound
@@ -20,9 +20,8 @@ class LOTLogin(View):
         login(request, user)
 
         try:
-            session_data = simplejson.loads(lot.session_data)
-            for key, value in session_data.iteritems():
-                request.session[key] = value
+            session_data = json.loads(lot.session_data)
+            request.session.update(session_data)
         except Exception:
             # If not correctly serialized not set the session_data
             pass
