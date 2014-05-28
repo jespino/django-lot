@@ -1,4 +1,4 @@
-import simplejson
+import json
 import datetime
 
 from django.utils import unittest
@@ -42,7 +42,7 @@ class TestLOTBase(unittest.TestCase):
         cls.lot4 =LOT.objects.create(
                 user=test_user,
                 type="always-login",
-                session_data=simplejson.dumps({'data':'test'}),
+                session_data=json.dumps({'data':'test'}),
         )
 
 
