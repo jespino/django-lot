@@ -26,16 +26,6 @@ You can also install it with: ``pip install django-lot``
 Configuration
 -------------
 
-Add the lot authentication backend to the :code:`AUTHENTICATION_BACKENDS`
-settings variable.
-
-Example::
-
-  AUTHENTICATION_BACKENDS = (
-      "django.contrib.auth.backends.ModelBackend",
-      "lot.auth_backend.LOTBackend",
-  )
-
 Add the lot app to your installed apps and define your settings :code:`LOT`
 variable as a dictionary and :code:`LOT_MIDDLEWARE_PARAM_NAME` if you use the
 lot middleware.
@@ -61,6 +51,41 @@ Example::
   }
 
   LOT_MIDDLEWARE_PARAM_NAME = 'uuid-login'
+
+GET key
+-------
+
+Add the lot authentication backend to the :code:`AUTHENTICATION_BACKENDS`
+settings variable.
+
+Example::
+
+  AUTHENTICATION_BACKENDS = (
+      "django.contrib.auth.backends.ModelBackend",
+      "lot.auth_backend.LOTBackend",
+  )
+
+
+Header Key
+----------
+
+Add the lot authentication middleware to the :code:`MIDDLEWARE_CLASSES`
+settings variable.  Ensure it is __after__ Django's AuthenticationMiddleware.
+
+Example::
+
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'lot.middleware.LOTAuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+    )
+
+warning::
+
+   This method should ONLY be used over HTTPS.
 
 Usage
 -----
