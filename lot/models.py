@@ -25,7 +25,7 @@ LOT_SETTINGS = getattr(settings, 'LOT', {
         'duration': None,
     },
 })
-LOT_TYPE_CHOICES = [(key, value['name']) for key, value in LOT_SETTINGS.iteritems()]
+LOT_TYPE_CHOICES = [(key, value['name']) for key, value in LOT_SETTINGS.items()]
 
 
 class LOT(models.Model):
@@ -37,10 +37,11 @@ class LOT(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=False, blank=False, verbose_name=_('creation date'))
 
     def verify(self):
-        if not self.type in LOT_SETTINGS:
-            return False
 
-        duration = LOT_SETTINGS.get(self.type, {}).get('duration', None)
+        try:
+            duration = LOT_SETTINGS[self.type].get('duration', None)
+        except KeyError:
+            return False
 
         if duration is None:
             return True
@@ -57,4 +58,4 @@ class LOT(models.Model):
         super(LOT, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return "{0} ({1})".format(self.get_type_display(), self.uuid)
+        return u"{0} ({1})".format(self.get_type_display(), self.uuid)
