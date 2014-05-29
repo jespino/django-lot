@@ -40,10 +40,15 @@ class LOT(models.Model):
     created = models.DateTimeField(_('Creation date'), auto_now_add=True)
 
     def verify(self):
+        if self.type not in LOT_SETTINGS:
+            return False
 
-        try:
-            duration = LOT_SETTINGS[self.type].get('duration', None)
-        except KeyError:
+        verify_setting = LOT_SETTINGS[self.type]
+
+        duration = verify_setting.get('duration', None)
+        verify_func = verify_setting.get('verify_func', lambda x: True)
+
+        if not verify_func(self):
             return False
 
         if duration is None:
