@@ -49,10 +49,11 @@ Example::
         'duration': None,
     },
     'morning-login': {
-        'name': _(u'Always login'),
+        'name': _(u'Morning login'),
         'one-time': False,
         'duration': None,
-        'verify_func': lambda x: datetime.now().hour < 12
+        'verify_func': lambda x: datetime.now().hour < 12,
+        'delete_on_fail': False  # TODO: Not implemented
     },
   }
 
