@@ -16,7 +16,8 @@ class LOTMiddleware(object):
                 return None
 
             if not lot.verify():
-                lot.delete()
+                if lot.delete_on_fail()
+                    lot.delete()
                 return None
 
             user = authenticate(lot_uuid=lot_uuid)
@@ -43,8 +44,9 @@ class LOTAuthenticationMiddleware(object):
             return
 
         if not lot.verify():
-            lot.delete()
-            return
+            if lot.delete_on_fail()
+                lot.delete()
+            return None
 
         request.user = lot.user
 

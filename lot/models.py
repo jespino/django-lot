@@ -56,6 +56,12 @@ class LOT(models.Model):
 
         return (now() - self.created).total_seconds() < duration
 
+    def delete_on_fail(self):
+        if self.type not in LOT_SETTINGS:
+            return True
+
+        return LOT_SETTINGS[self.type].get('delete_on_fail', True)
+
     def is_one_time(self):
         return LOT_SETTINGS.get(self.type, {}).get('one-time', False)
 
