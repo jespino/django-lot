@@ -16,7 +16,7 @@ class LOTMiddleware(object):
                 return None
 
             if not lot.verify():
-                if lot.delete_on_fail()
+                if lot.delete_on_fail():
                     lot.delete()
                 return None
 
@@ -44,7 +44,7 @@ class LOTAuthenticationMiddleware(object):
             return
 
         if not lot.verify():
-            if lot.delete_on_fail()
+            if lot.delete_on_fail():
                 lot.delete()
             return None
 
