@@ -46,7 +46,7 @@ class LOT(models.Model):
         verify_setting = LOT_SETTINGS[self.type]
 
         duration = verify_setting.get('duration', None)
-        verify_func = verify_setting.get('verify_func', lambda x: True)
+        verify_func = verify_setting.get('verify-func', lambda x: True)
 
         if not verify_func(self):
             return False
@@ -60,7 +60,7 @@ class LOT(models.Model):
         if self.type not in LOT_SETTINGS:
             return True
 
-        return LOT_SETTINGS[self.type].get('delete_on_fail', True)
+        return LOT_SETTINGS[self.type].get('delete-on-fail', True)
 
     def is_one_time(self):
         return LOT_SETTINGS.get(self.type, {}).get('one-time', False)

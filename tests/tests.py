@@ -50,7 +50,8 @@ class TestLOTBase(unittest.TestCase):
             'name': 'with session data login',
             'one-time': False,
             'duration': None,
-            'verify_func': lambda x: len(x.session_data) != 0
+            'verify-func': lambda x: len(x.session_data) != 0,
+            'delete-on-fail': False
         }
         cls.lot5 = LOT.objects.create(
             user=test_user,
@@ -270,3 +271,10 @@ class TestLOTModel(TestLOTBase):
         self.assertFalse(self.lot2.is_one_time())
         self.assertFalse(self.lot3.is_one_time())
         self.assertFalse(self.lot4.is_one_time())
+
+    def test_lot_model_delete_on_fail(self):
+        self.assertTrue(self.lot1.delete_on_fail())
+        self.assertTrue(self.lot2.delete_on_fail())
+        self.assertTrue(self.lot3.delete_on_fail())
+        self.assertTrue(self.lot4.delete_on_fail())
+        self.assertFalse(self.lot5.delete_on_fail())
