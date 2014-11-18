@@ -153,6 +153,13 @@ class TestLOTView(TestLOTBase):
 
 
 class TestLOTMiddleware(TestLOTBase):
+    def test_lot_login_middleware_not_valid_uuid_format(self):
+        c = Client()
+        invalid_uuid = '123'
+        response = c.get('/test_url/', {'uuid-login': invalid_uuid})
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse("_auth_user_id" in c.session)
+
     def test_lot_login_middleware_not_valid(self):
         c = Client()
         false_uuid = '12341234-1234-1234-1234-123412341234'
@@ -240,6 +247,13 @@ class TestLOTMiddleware(TestLOTBase):
         self.assertEqual(c.session['data'], "test")
 
 class TestLOTAuthenticationMiddleware(TestLOTBase):
+    def test_lot_authentication_middleware_not_valid_uuid_format(self):
+        invalid_uuid = '123'
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(invalid_uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertFalse(hasattr(request, "user"))
+
     def test_lot_authentication_middleware_not_valid(self):
         false_uuid = '12341234-1234-1234-1234-123412341234'
         request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(false_uuid))
