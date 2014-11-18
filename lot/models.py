@@ -35,7 +35,7 @@ class LOT(models.Model):
     uuid = models.CharField(_('UUID'), max_length=50)
     type = models.SlugField(_('LOT type'), max_length=50,
                             choices=LOT_TYPE_CHOICES)
-    user = models.ForeignKey(get_user_model(), verbose_name=_('user'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'))
     session_data = models.TextField(_('Jsoned Session Data'), blank=True)
     created = models.DateTimeField(_('Creation date'), auto_now_add=True)
 

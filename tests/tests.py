@@ -1,20 +1,27 @@
 import json
 import datetime
+import unittest
 
-from django.utils import unittest
+import django
+if django.VERSION >= (1, 7):
+    django.setup()
+
 from django.conf import settings
 from django.template import Template, Context
 from django.core.management import call_command
-from django.test.client import Client
+from django.test.client import Client, RequestFactory
 from django.views.generic import View
 from django.http import HttpResponse
+from django.contrib.sessions.middleware import SessionMiddleware
 
 from django.contrib.auth import get_user_model
 
 from lot.models import LOT
+from lot.middleware import LOTAuthenticationMiddleware
 import lot.models
 
 call_command('syncdb', interactive=False)
+
 
 class TestView(View):
     def get(self, request):
@@ -24,6 +31,8 @@ class TestView(View):
 class TestLOTBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.factory = RequestFactory()
+
         get_user_model().objects.all().delete()
         LOT.objects.all().delete()
 
@@ -190,7 +199,7 @@ class TestLOTMiddleware(TestLOTBase):
 
         self.assertEqual(LOT.objects.all().count(), lots-1)
 
-    def test_lot_login_middleware_allways_valid(self):
+    def test_lot_login_middleware_always_valid(self):
         c = Client()
         lots = LOT.objects.all().count()
 
@@ -229,6 +238,75 @@ class TestLOTMiddleware(TestLOTBase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(c.session['_auth_user_id'], 1)
         self.assertEqual(c.session['data'], "test")
+
+class TestLOTAuthenticationMiddleware(TestLOTBase):
+    def test_lot_authentication_middleware_not_valid(self):
+        false_uuid = '12341234-1234-1234-1234-123412341234'
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(false_uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertFalse(hasattr(request, "user"))
+
+    def test_lot_authentication_middleware_one_time(self):
+        lots = LOT.objects.all().count()
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot1.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertTrue(request.user is not None)
+
+        self.assertEqual(LOT.objects.all().count(), lots-1)
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot1.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertFalse(hasattr(request, "user"))
+
+        self.assertEqual(LOT.objects.all().count(), lots-1)
+
+    def test_lot_authentication_middleware_temporary_valid(self):
+        lots = LOT.objects.all().count()
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot2.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertEqual(LOT.objects.all().count(), lots)
+
+        self.lot2.created = self.lot2.created - datetime.timedelta(days=10)
+        self.lot2.save(force_modification=True)
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot2.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertEqual(LOT.objects.all().count(), lots-1)
+
+    def test_lot_authentication_middleware_always_valid(self):
+        lots = LOT.objects.all().count()
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot3.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertEqual(LOT.objects.all().count(), lots)
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot3.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertEqual(LOT.objects.all().count(), lots)
+
+        self.lot3.created = self.lot3.created - datetime.timedelta(days=10000)
+        self.lot3.save(force_modification=True)
+
+        request = self.factory.get('/test_url/', {}, HTTP_X_AUTH_TOKEN=str(self.lot3.uuid))
+        LOTAuthenticationMiddleware().process_request(request)
+
+        self.assertEqual(LOT.objects.all().count(), lots)
+
+    def test_lot_authentication_middleware_with_session_data(self):
+        request = self.factory.get('/test_url/')
+        request.META['HTTP_X_AUTH_TOKEN'] = str(self.lot4.uuid)
+        SessionMiddleware().process_request(request)
+        LOTAuthenticationMiddleware().process_request(request)
+        self.assertEqual(request.session['data'], "test")
 
 
 class TestLOTModel(TestLOTBase):
