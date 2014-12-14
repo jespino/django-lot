@@ -5,7 +5,7 @@ from django.conf import settings
 from django.apps import apps
 from django.utils.translation import ugettext_lazy as _
 
-from django.contrib.auth import get_user_model
+#~ from django.contrib.auth import get_user_model
 
 from django.utils.timezone import now
 user_app, user_model = settings.AUTH_USER_MODEL.split('.')
