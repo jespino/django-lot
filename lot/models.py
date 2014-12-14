@@ -2,13 +2,17 @@ from uuid import uuid4
 
 from django.db import models
 from django.conf import settings
-from django.apps import apps
 from django.utils.translation import ugettext_lazy as _
 
-#~ from django.contrib.auth import get_user_model
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except:
+    from django.apps import apps
+    user_app, user_model = settings.AUTH_USER_MODEL.split('.')
+    User = apps.get_app_config(user_app).get_model(user_model)
 
 from django.utils.timezone import now
-user_app, user_model = settings.AUTH_USER_MODEL.split('.')
 
 
 LOT_SETTINGS = getattr(settings, 'LOT', {
@@ -38,7 +42,7 @@ class LOT(models.Model):
     uuid = models.CharField(_('UUID'), max_length=50)
     type = models.SlugField(_('LOT type'), max_length=50,
                             choices=LOT_TYPE_CHOICES)
-    user = models.ForeignKey(apps.get_app_config(user_app).get_model(user_model), verbose_name=_('user'))
+    user = models.ForeignKey(User, verbose_name=_('user'))
     session_data = models.TextField(_('Jsoned Session Data'), blank=True)
     created = models.DateTimeField(_('Creation date'), auto_now_add=True)
 
