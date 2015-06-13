@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
@@ -14,9 +14,7 @@ setup(
     author = "Jesús Espino, Curtis Malone",
     author_email = "jespinog@gmail.com, curtis@tinbrain.net",
     version=':versiontools:lot:',
-    packages = [
-        "lot",
-    ],
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     description = description.strip(),
     install_requires=['django >= 1.3.0', 'simplejson >= 3.3.0'],
     setup_requires = [
