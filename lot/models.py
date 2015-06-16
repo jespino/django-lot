@@ -4,8 +4,6 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from django.contrib.auth import get_user_model
-
 from django.utils.timezone import now
 
 LOT_SETTINGS = getattr(settings, 'LOT', {
@@ -38,6 +36,7 @@ class LOT(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'))
     session_data = models.TextField(_('Jsoned Session Data'), blank=True)
     created = models.DateTimeField(_('Creation date'), auto_now_add=True)
+    next_url = models.URLField(blank=True)
 
     def verify(self):
         if self.type not in LOT_SETTINGS:
