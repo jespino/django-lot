@@ -80,13 +80,13 @@ class TestLOTView(TestLOTBase):
         lots = LOT.objects.all().count()
         response = c.get('/login/{0}/'.format(self.lot1.uuid))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot1.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots-1)
 
         response = c.get('/login/{0}/'.format(self.lot1.uuid))
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot1.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots-1)
 
@@ -95,7 +95,7 @@ class TestLOTView(TestLOTBase):
         lots = LOT.objects.all().count()
         response = c.get('/login/{0}/'.format(self.lot2.uuid))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot2.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots)
 
@@ -117,7 +117,7 @@ class TestLOTView(TestLOTBase):
 
         response = c.get('/login/{0}/'.format(self.lot3.uuid))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot3.user_id)
 
         c.logout()
         self.assertFalse("_auth_user_id" in c.session)
@@ -126,7 +126,7 @@ class TestLOTView(TestLOTBase):
 
         response = c.get('/login/{0}/'.format(self.lot3.uuid))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot3.user_id)
 
         c.logout()
         self.assertFalse("_auth_user_id" in c.session)
@@ -138,7 +138,7 @@ class TestLOTView(TestLOTBase):
 
         response = c.get('/login/{0}/'.format(self.lot3.uuid))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot3.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots)
 
@@ -148,7 +148,7 @@ class TestLOTView(TestLOTBase):
 
         response = c.get('/login/{0}/'.format(self.lot4.uuid))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot4.user_id)
         self.assertEqual(c.session['data'], "test")
 
 
@@ -172,7 +172,7 @@ class TestLOTMiddleware(TestLOTBase):
         lots = LOT.objects.all().count()
         response = c.get('/test_url/', {'uuid-login': self.lot1.uuid})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot1.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots-1)
 
@@ -190,7 +190,7 @@ class TestLOTMiddleware(TestLOTBase):
         lots = LOT.objects.all().count()
         response = c.get('/test_url/', {'uuid-login': self.lot2.uuid})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot2.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots)
 
@@ -212,7 +212,7 @@ class TestLOTMiddleware(TestLOTBase):
 
         response = c.get('/test_url/', {'uuid-login': self.lot3.uuid})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot3.user_id)
 
         c.logout()
         self.assertFalse("_auth_user_id" in c.session)
@@ -221,7 +221,7 @@ class TestLOTMiddleware(TestLOTBase):
 
         response = c.get('/test_url/', {'uuid-login': self.lot3.uuid})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot3.user_id)
 
         c.logout()
         self.assertFalse("_auth_user_id" in c.session)
@@ -233,7 +233,7 @@ class TestLOTMiddleware(TestLOTBase):
 
         response = c.get('/test_url/', {'uuid-login': self.lot3.uuid})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot3.user_id)
 
         self.assertEqual(LOT.objects.all().count(), lots)
 
@@ -243,7 +243,7 @@ class TestLOTMiddleware(TestLOTBase):
 
         response = c.get('/test_url/', {'uuid-login': self.lot4.uuid})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(c.session['_auth_user_id'], 1)
+        self.assertEqual(int(c.session['_auth_user_id']), self.lot4.user_id)
         self.assertEqual(c.session['data'], "test")
 
 class TestLOTAuthenticationMiddleware(TestLOTBase):
