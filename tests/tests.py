@@ -14,7 +14,13 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.contrib.sessions.middleware import SessionMiddleware
 
-from django.contrib.auth import get_user_model
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except:
+    from django.apps import apps
+    user_app, user_model = settings.AUTH_USER_MODEL.split('.')
+    User = apps.get_app_config(user_app).get_model(user_model)
 
 from lot.models import LOT
 from lot.middleware import LOTAuthenticationMiddleware
