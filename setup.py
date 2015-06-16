@@ -16,6 +16,7 @@ setup(
     version=':versiontools:lot:',
     packages = [
         "lot",
+        "lot.migrations",
     ],
     description = description.strip(),
     install_requires=['django >= 1.3.0', 'simplejson >= 3.3.0'],
