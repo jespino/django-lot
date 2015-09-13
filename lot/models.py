@@ -62,7 +62,11 @@ class LOT(models.Model):
         if duration is None:
             return True
 
-        return (now() - self.created).total_seconds() < duration
+        dt = now() - self.created
+        if hasattr(dt, 'total_seconds'):
+            return (dt.total_seconds() < duration)
+        else:
+            return ((dt.microseconds + (dt.seconds + dt.days * 24 * 3600) * 10 ** 6) / 10 ** 6 < duration)
 
     def delete_on_fail(self):
         if self.type not in LOT_SETTINGS:
