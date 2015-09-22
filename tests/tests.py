@@ -13,20 +13,18 @@ from django.test.client import Client, RequestFactory
 from django.views.generic import View
 from django.http import HttpResponse
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.core.exceptions import ValidationError
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except:
-    from django.apps import apps
-    user_app, user_model = settings.AUTH_USER_MODEL.split('.')
-    User = apps.get_app_config(user_app).get_model(user_model)
+from django.contrib.auth import get_user_model
 
 from lot.models import LOT
 from lot.middleware import LOTAuthenticationMiddleware
 import lot.models
 
-call_command('syncdb', interactive=False)
+
+User = get_user_model()
+
+call_command('migrate', interactive=False)
 
 
 class TestView(View):
@@ -39,10 +37,10 @@ class TestLOTBase(unittest.TestCase):
     def setUpClass(cls):
         cls.factory = RequestFactory()
 
-        get_user_model().objects.all().delete()
+        User.objects.all().delete()
         LOT.objects.all().delete()
 
-        test_user = get_user_model().objects.create(username="test")
+        test_user = User.objects.create(username="test")
         cls.lot1 = LOT.objects.create(
             user=test_user,
             type="fast-login",
@@ -117,7 +115,7 @@ class TestLOTView(TestLOTBase):
 
         self.assertEqual(LOT.objects.all().count(), lots-1)
 
-    def test_lot_login_view_allways_valid(self):
+    def test_lot_login_view_always_valid(self):
         c = Client()
         lots = LOT.objects.all().count()
 
@@ -363,6 +361,16 @@ class TestLOTModel(TestLOTBase):
         self.assertFalse(self.lot5.verify())
         self.lot5.session_data = "test"
         self.assertTrue(self.lot5.verify())
+
+    def test_validation_on_type(self):
+        test_user = User.objects.get(username="test")
+
+        lot5 = LOT(type='fast-login', user_id=test_user.pk)
+        lot5.clean()
+
+        lot6 = LOT(type='invalid-type', user_id=test_user.pk)
+        with self.assertRaises(ValidationError):
+            lot6.clean()
 
     def test_lot_model_is_one_time(self):
         self.assertTrue(self.lot1.is_one_time())

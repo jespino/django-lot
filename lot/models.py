@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
 
 
 # Taken from mezzaine, Django < 1.5 compatability
@@ -36,8 +37,7 @@ LOT_TYPE_CHOICES = [
 
 class LOT(models.Model):
     uuid = models.CharField(_('UUID'), max_length=50)
-    type = models.SlugField(_('LOT type'), max_length=50,
-                            choices=LOT_TYPE_CHOICES)
+    type = models.SlugField(_('LOT type'), max_length=50)
     user = models.ForeignKey(user_model_name, verbose_name=_('user'))
     session_data = models.TextField(_('Jsoned Session Data'), blank=True)
     created = models.DateTimeField(_('Creation date'), auto_now_add=True)
@@ -79,6 +79,10 @@ class LOT(models.Model):
                             'force_modification parameter on save.')
         self.uuid = uuid4()
         super(LOT, self).save(*args, **kwargs)
+
+    def clean(self):
+        if self.type not in LOT_SETTINGS:
+            raise ValidationError(_('LOT type %s not found' % self.type))
 
     def __unicode__(self):
         return u"{0} ({1})".format(self.get_type_display(), self.uuid)
