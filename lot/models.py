@@ -74,9 +74,6 @@ class LOT(models.Model):
         return LOT_SETTINGS.get(self.type, {}).get('one-time', False)
 
     def save(self, *args, **kwargs):
-        if self.id and not kwargs.pop('force_modification', False):
-            raise Exception('Modification not allowed without '
-                            'force_modification parameter on save.')
         self.uuid = uuid4()
         super(LOT, self).save(*args, **kwargs)
 
