@@ -1,16 +1,13 @@
 Django Login over Token
 =======================
 
-.. image:: https://travis-ci.org/jespino/django-lot.png?branch=master
+.. image:: https://img.shields.io/travis/jespino/django-lot/master.svg
     :target: https://travis-ci.org/jespino/django-lot
 
-.. image:: https://coveralls.io/repos/jespino/django-lot/badge.png?branch=master
+.. image:: https://img.shields.io/coveralls/jespino/django-lot.svg
     :target: https://coveralls.io/r/jespino/django-lot?branch=master
 
 .. image:: https://img.shields.io/pypi/v/django-lot.svg
-    :target: https://pypi.python.org/pypi/django-lot
-
-.. image:: https://img.shields.io/pypi/dm/django-lot.svg
     :target: https://pypi.python.org/pypi/django-lot
 
 Django Login over Token easy the creation of token based logins. Can be
