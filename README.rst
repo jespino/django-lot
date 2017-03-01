@@ -7,11 +7,11 @@ Django Login over Token
 .. image:: https://coveralls.io/repos/jespino/django-lot/badge.png?branch=master
     :target: https://coveralls.io/r/jespino/django-lot?branch=master
 
-.. image:: https://pypip.in/v/django-lot/badge.png
-    :target: https://crate.io/packages/django-lot
+.. image:: https://img.shields.io/pypi/v/django-lot.svg
+    :target: https://pypi.python.org/pypi/django-lot
 
-.. image:: https://pypip.in/d/django-lot/badge.png
-    :target: https://crate.io/packages/django-lot
+.. image:: https://img.shields.io/pypi/dm/django-lot.svg
+    :target: https://pypi.python.org/pypi/django-lot
 
 Django Login over Token easy the creation of token based logins. Can be
 one-time-logins, temporary valid logins or permanent logins, always based on
