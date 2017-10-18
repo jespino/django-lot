@@ -3,13 +3,14 @@ import re
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.utils.deprecation import MiddlewareMixin
 
 from .models import LOT
 
 uuidRegex = re.compile("^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$")
 
 
-class LOTMiddleware(object):
+class LOTMiddleware(MiddlewareMixin):
     def process_request(self, request):
         lot_uuid = request.GET.get(settings.LOT_MIDDLEWARE_PARAM_NAME, None)
         if lot_uuid:
@@ -40,7 +41,7 @@ class LOTMiddleware(object):
                 lot.delete()
 
 
-class LOTAuthenticationMiddleware(object):
+class LOTAuthenticationMiddleware(MiddlewareMixin):
     '''Authenticate using a Header'''
     def process_request(self, request):
         try:
