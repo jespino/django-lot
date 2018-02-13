@@ -38,7 +38,7 @@ LOT_TYPE_CHOICES = [
 class LOT(models.Model):
     uuid = models.CharField(_('UUID'), max_length=50)
     type = models.SlugField(_('LOT type'), max_length=50)
-    user = models.ForeignKey(user_model_name, verbose_name=_('user'))
+    user = models.ForeignKey(user_model_name, verbose_name=_('user'), on_delete=models.CASCADE)
     session_data = models.TextField(_('Jsoned Session Data'), blank=True)
     created = models.DateTimeField(_('Creation date'), auto_now_add=True)
     next_url = models.URLField(blank=True)
