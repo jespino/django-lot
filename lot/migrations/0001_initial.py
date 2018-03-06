@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
 from django.conf import settings
+from django.db import models, migrations
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -20,7 +21,7 @@ class Migration(migrations.Migration):
                 ('type', models.SlugField(choices=[('fast-login', 'Fast login'), ('slow-login', 'Slow login'), ('always-login', 'Always login')], verbose_name='LOT type')),
                 ('session_data', models.TextField(blank=True, verbose_name='Jsoned Session Data')),
                 ('created', models.DateTimeField(verbose_name='Creation date', auto_now_add=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='user', on_delete=django.db.models.deletion.CASCADE)),
             ],
         ),
     ]
