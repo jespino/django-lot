@@ -7,7 +7,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 from .models import LOT
 
-uuidRegex = re.compile("^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$")
+uuidRegex = re.compile('[0-9a-f]{12}4[0-9a-f]{3}[89ab][0-9a-f]{15}\Z', re.I)
 
 
 class LOTMiddleware(MiddlewareMixin):
