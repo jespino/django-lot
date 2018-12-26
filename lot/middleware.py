@@ -1,24 +1,23 @@
 import json
-import re
-
+from uuid import UUID
 from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.utils.deprecation import MiddlewareMixin
 
 from .models import LOT
 
-uuidRegex = re.compile('[0-9a-f]{12}4[0-9a-f]{3}[89ab][0-9a-f]{15}\Z', re.I)
-
 
 class LOTMiddleware(MiddlewareMixin):
     def process_request(self, request):
         lot_uuid = request.GET.get(settings.LOT_MIDDLEWARE_PARAM_NAME, None)
         if lot_uuid:
-            if not uuidRegex.match(lot_uuid):
+            try:
+                val = UUID(lot_uuid, version=4)
+            except ValueError:
                 return None
 
             try:
-                lot = LOT.objects.get(uuid=lot_uuid)
+                lot = LOT.objects.get(uuid=str(val))
             except LOT.DoesNotExist:
                 return None
 
