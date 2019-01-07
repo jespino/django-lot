@@ -4,7 +4,7 @@ from .models import LOT
 
 
 class LOTBackend(ModelBackend):
-    def authenticate(self, lot_uuid=None, **kwargs):
+    def authenticate(self, request, lot_uuid=None, **kwargs):
         try:
             lot = LOT.objects.get(uuid=lot_uuid)
         except LOT.DoesNotExist:
