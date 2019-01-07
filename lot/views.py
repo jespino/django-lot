@@ -18,8 +18,11 @@ class LOTLogin(View):
             lot.delete()
             return HttpResponseNotFound()
 
-        user = authenticate(lot_uuid=uuid)
-        login(request, user)
+        user = authenticate(request, lot_uuid=uuid)
+        if user is not None:
+            login(request, user)
+        else:
+            raise RuntimeError('The authentication backend did not return a user')
 
         try:
             session_data = json.loads(lot.session_data)
