@@ -38,7 +38,7 @@ class LOTLogin(View):
         if lot.next_url:
             redirect_to = resolve_url(lot.next_url)
 
-        if not is_safe_url(url=redirect_to, host=request.get_host()):
+        if not is_safe_url(url=redirect_to, allowed_hosts=[request.get_host()]):
             redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
 
         return HttpResponseRedirect(redirect_to)
