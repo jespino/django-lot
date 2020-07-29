@@ -1,11 +1,10 @@
 from uuid import uuid4
 
-from django.db import models
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
-from django.utils.timezone import now
 from django.core.exceptions import ValidationError
-
+from django.db import models
+from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
 
 # Taken from mezzaine, Django < 1.5 compatability
 # https://github.com/stephenmcd/mezzanine/blob/master/mezzanine/utils/models.py
